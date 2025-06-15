@@ -1,121 +1,210 @@
 import random
 import time
+import tkinter as tk
+from tkinter import messagebox, simpledialog
 
-# Dicionário com esportes e dicas
+## todas opções de esportes 
 esportes = {
-    "⚽": {"nome": "Futebol", "dicas": ["Uma partida tem 90 minutos.", "O Brasil tem 5 Copas do Mundo.", "Cada time joga com 11 jogadores.", "A bola é redonda.", "É o esporte mais popular do mundo.", "O objetivo é fazer gols.", "Tem impedimento.", "É jogado em campo de grama.", "Tem goleiro.", "Cristiano Ronaldo e Messi são estrelas desse esporte."]},
-    "🏀": {"nome": "Basquete", "dicas": ["Cada cesta vale de 1 a 3 pontos.", "É jogado com as mãos.", "Michael Jordan é um ícone.", "Tem dribles e enterradas.", "A bola é laranja.", "A quadra é coberta.", "5 jogadores por time em quadra.", "A NBA é o principal campeonato.", "Tem tempo limitado por posse.", "Existe o arremesso de 3 pontos."]},
-    "🎾": {"nome": "Tenis", "dicas": ["A bola deve quicar no campo adversário.", "É jogado com raquete.", "Pode ser individual ou em duplas.", "Tem game, set e match.", "Wimbledon é um torneio famoso.", "Roger Federer é um nome forte no esporte.", "O campo pode ser de saibro, grama ou duro.", "Tem vantagem e igualdade.", "É silencioso durante os pontos.", "A bola é pequena e amarela."]},
-    "🏐": {"nome": "Volei", "dicas": ["Cada time tem 6 jogadores em quadra.", "É jogado com as mãos.", "Tem saque, bloqueio e cortada.", "A bola não pode tocar o chão.", "O Brasil é referência mundial.", "Existe o líbero, que usa uniforme diferente.", "É disputado em sets.", "Pode ser jogado na praia também.", "Tem rotação entre jogadores.", "A rede separa os dois lados."]},
-    "🏈": {"nome": "Futebol Americano", "dicas": ["A bola tem formato oval.", "Cada jogada é tática.", "Tem touchdown e field goal.", "É muito popular nos EUA.", "Os jogadores usam capacetes.", "O Super Bowl é a final mais famosa.", "Tem posições como quarterback e linebacker.", "Avanço por jardas.", "É um esporte de contato.", "Tem 4 quartos no jogo."]},
-    "⚾": {"nome": "Beisebol", "dicas": ["É muito popular no Japão e nos EUA.", "Tem bastão e luvas.", "O jogador corre por bases.", "Tem home run.", "O arremessador é o pitcher.", "O receptor é o catcher.", "Jogo com 9 entradas.", "A bola é branca com costura vermelha.", "Time que marca mais corridas vence.", "Tem rebatedores."]},
-    "🥊": {"nome": "Boxe", "dicas": ["É um esporte de combate.", "Os atletas usam luvas.", "Tem categorias por peso.", "Muhammad Ali é uma lenda.", "Tem rounds e juízes.", "Não pode golpear abaixo da linha de cintura.", "É praticado no ringue.", "Objetivo é nocautear ou pontuar mais.", "Tem contagem de 10 no nocaute.", "Cada round dura 3 minutos."]},
-    "🏓": {"nome": "Tenis de Mesa", "dicas": ["Também é chamado de ping pong.", "Jogado com raquetes pequenas.", "A mesa tem rede no meio.", "A bola é leve e pequena.", "Popular na China.", "Os pontos vão até 11.", "Pode ser jogado em duplas.", "É muito rápido.", "A bola deve quicar dos dois lados.", "A mesa é verde ou azul."]},
-    "🏸": {"nome": "Badminton", "dicas": ["Usa peteca (volante).", "As raquetes são finas e leves.", "Pode ser individual ou em duplas.", "É jogado em quadra coberta.", "É o esporte de raquete mais rápido do mundo.", "Tem saque e rally.", "Popular na Ásia.", "O objetivo é cair no lado adversário.", "A pontuação vai até 21.", "A rede é mais baixa que a do vôlei."]},
-    "⛳": {"nome": "Golfe", "dicas": ["O objetivo é colocar a bola no buraco.", "Usa tacos.", "É jogado em campo aberto.", "Tem 18 buracos por padrão.", "Tiger Woods é um ícone do esporte.", "É jogado com calma e precisão.", "Cada buraco tem par específico.", "A bola é pequena e branca.", "Pode demorar horas uma partida.", "O menor número de tacadas vence."]},
-    "🤽": {"nome": "Polo Aquatico", "dicas": ["É jogado dentro da piscina.", "Cada time tem 7 jogadores.", "O objetivo é marcar gols.", "Exige muita resistência.", "A bola é arremessada com a mão.", "Tem goleiro.", "Não pode encostar no fundo da piscina.", "Tem exclusões temporárias.", "A bola é amarela.", "É um esporte olímpico."]},
-    "🥋": {"nome": "Judo", "dicas": ["É um esporte de origem japonesa.", "Usa kimono.", "Tem faixas de graduação.", "Tem projeções e imobilizações.", "É disputado no tatame.", "O objetivo é derrubar ou imobilizar.", "Tem pontuação como ippon e waza-ari.", "Respeito é fundamental.", "É muito praticado no Brasil.", "Foi criado por Jigoro Kano."]}
+    "⚽": {"nome": "Futebol", "dicas": ["Uma partida tem 90 minutos.", "O Brasil tem 5 Copas do Mundo.", "Cada time joga com 11 jogadores.",
+                                        "A bola é redonda.", "É o esporte mais popular do mundo.", "O objetivo é fazer gols.",
+                                        "Tem impedimento.", "É jogado em campo de grama.", "Tem goleiro.",
+                                        "Cristiano Ronaldo e Messi são estrelas desse esporte."]},
+    "🏀": {"nome": "Basquete", "dicas": ["Cada cesta vale de 1 a 3 pontos.", "É jogado com as mãos.", "Michael Jordan é um ícone.",
+                                         "Tem dribles e enterradas.", "A bola é laranja.", "A quadra é coberta.",
+                                         "5 jogadores por time em quadra.", "A NBA é o principal campeonato.",
+                                         "Tem tempo limitado por posse.", "Existe o arremesso de 3 pontos."]},
+    "🎾": {"nome": "Tenis", "dicas": ["A bola deve quicar no campo adversário.", "É jogado com raquete.", "Pode ser individual ou em duplas.",
+                                      "Tem game, set e match.", "Wimbledon é um torneio famoso.", "Roger Federer é um nome forte no esporte.",
+                                      "O campo pode ser de saibro, grama ou duro.", "Tem vantagem e igualdade.",
+                                      "É silencioso durante os pontos.", "A bola é pequena e amarela."]},
+    "🏐": {"nome": "Volei", "dicas": ["Cada time tem 6 jogadores em quadra.", "É jogado com as mãos.", "Tem saque, bloqueio e cortada.",
+                                      "A bola não pode tocar o chão.", "O Brasil é referência mundial.",
+                                      "Existe o líbero, que usa uniforme diferente.", "É disputado em sets.",
+                                      "Pode ser jogado na praia também.", "Tem rotação entre jogadores.",
+                                      "A rede separa os dois lados."]},
+    "🏈": {"nome": "Futebol Americano", "dicas": ["A bola tem formato oval.", "Cada jogada é tática.", "Tem touchdown e field goal.",
+                                                 "É muito popular nos EUA.", "Os jogadores usam capacetes.",
+                                                 "O Super Bowl é a final mais famosa.", "Tem posições como quarterback e linebacker.",
+                                                 "Avanço por jardas.", "É um esporte de contato.", "Tem 4 quartos no jogo."]},
+    "⚾": {"nome": "Beisebol", "dicas": ["É muito popular no Japão e nos EUA.", "Tem bastão e luvas.", "O jogador corre por bases.",
+                                         "Tem home run.", "O arremessador é o pitcher.", "O receptor é o catcher.",
+                                         "Jogo com 9 entradas.", "A bola é branca com costura vermelha.",
+                                         "Time que marca mais corridas vence.", "Tem rebatedores."]},
+    "🥊": {"nome": "Boxe", "dicas": ["É um esporte de combate.", "Os atletas usam luvas.", "Tem categorias por peso.",
+                                     "Muhammad Ali é uma lenda.", "Tem rounds e juízes.",
+                                     "Não pode golpear abaixo da linha de cintura.", "É praticado no ringue.",
+                                     "Objetivo é nocautear ou pontuar mais.", "Tem contagem de 10 no nocaute.",
+                                     "Cada round dura 3 minutos."]},
+    "🏓": {"nome": "Tenis de Mesa", "dicas": ["Também é chamado de ping pong.", "Jogado com raquetes pequenas.",
+                                             "A mesa tem rede no meio.", "A bola é leve e pequena.", "Popular na China.",
+                                             "Os pontos vão até 11.", "Pode ser jogado em duplas.", "É muito rápido.",
+                                             "A bola deve quicar dos dois lados.", "A mesa é verde ou azul."]},
+    "🏸": {"nome": "Badminton", "dicas": ["Usa peteca (volante).", "As raquetes são finas e leves.",
+                                         "Pode ser individual ou em duplas.", "É jogado em quadra coberta.",
+                                         "É o esporte de raquete mais rápido do mundo.", "Tem saque e rally.",
+                                         "Popular na Ásia.", "O objetivo é cair no lado adversário.",
+                                         "A pontuação vai até 21.", "A rede é mais baixa que a do vôlei."]},
+    "⛳": {"nome": "Golfe", "dicas": ["O objetivo é colocar a bola no buraco.", "Usa tacos.", "É jogado em campo aberto.",
+                                     "Tem 18 buracos por padrão.", "Tiger Woods é um ícone do esporte.",
+                                     "É jogado com calma e precisão.", "Cada buraco tem par específico.",
+                                     "A bola é pequena e branca.", "Pode demorar horas uma partida.",
+                                     "O menor número de tacadas vence."]},
+    "🤽": {"nome": "Polo Aquatico", "dicas": ["É jogado dentro da piscina.", "Cada time tem 7 jogadores.",
+                                             "O objetivo é marcar gols.", "Exige muita resistência.",
+                                             "A bola é arremessada com a mão.", "Tem goleiro.",
+                                             "Não pode encostar no fundo da piscina.", "Tem exclusões temporárias.",
+                                             "A bola é amarela.", "É um esporte olímpico."]},
+    "🥋": {"nome": "Judo", "dicas": ["É um esporte de origem japonesa.", "Usa kimono.", "Tem faixas de graduação.",
+                                     "Tem projeções e imobilizações.", "É disputado no tatame.",
+                                     "O objetivo é derrubar ou imobilizar.", "Tem pontuação como ippon e waza-ari.",
+                                     "Respeito é fundamental.", "É muito praticado no Brasil.",
+                                     "Foi criado por Jigoro Kano."]}
 }
-
-def salvar_ranking(nome, pontos, duracao, resultado):
-    with open("ranking.txt", "a", encoding="utf-8") as arquivo:
-        arquivo.write(f"{nome} - {pontos} eliminações - {duracao:.2f} segundos - {resultado}\n")
-
+## cria um tabuleiro, torna os emojis uma lista c/ os esportes da sessão acima 
 def criar_tabuleiro():
+    """Embaralha os emojis em linhas de 4."""
     emojis = list(esportes.keys())
     random.shuffle(emojis)
-    return [emojis[i:i+4] for i in range(0, len(emojis), 4)]
+    return [emojis[i:i + 4] for i in range(0, len(emojis), 4)]
+## funcao pra salvar o raking sempre que o jogo for finalizado, abrindo o arquivo ranking.txt
+def salvar_ranking(nome, pontos, duracao, resultado):
+    with open("ranking.txt", "a", encoding="utf-8") as arq:
+        arq.write(f"{nome} - {pontos} eliminações - {duracao:.2f} segundos - {resultado}\n")
 
-def mostrar_tabuleiro(tabuleiro, revelados, oculto=False):
-    print("    A    B    C    D")
-    for i, linha in enumerate(tabuleiro):
-        linha_str = f"{i+1} | " + " | ".join(
-            ["❓" if oculto and revelados[i][j] else "❌" if not revelados[i][j] else emoji
-             for j, emoji in enumerate(linha)]
-        ) + " |"
-        print(linha_str)
+# ---------------------- Classe principal --------------------- #
+class JogoGUI:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Cara a Cara dos Esportes 🏆")
 
-def coordenada_para_indices(coordenada):
-    colunas = {"A": 0, "B": 1, "C": 2, "D": 3}
-    if len(coordenada) != 2:
-        return None, None
-    coluna = colunas.get(coordenada[0].upper())
-    linha = int(coordenada[1]) - 1 if coordenada[1].isdigit() else None
-    return linha, coluna
+        # Pergunta o nome
+        self.nome = simpledialog.askstring("Nome", "Digite seu nome:", parent=self.root)
+        if not self.nome:
+            self.root.destroy();  return
 
-nome_jogador = input("Digite seu nome para começar: ").strip()
-tabuleiro_jogador = criar_tabuleiro()
-tabuleiro_maquina = criar_tabuleiro()
-revelados_jogador = [[True]*4 for _ in tabuleiro_jogador]
-revelados_maquina = [[True]*4 for _ in tabuleiro_maquina]
-emoji_secreto_maquina = random.choice([emoji for linha in tabuleiro_jogador for emoji in linha])
-emoji_secreto_jogador = random.choice([emoji for linha in tabuleiro_maquina for emoji in linha])
-pontos_jogador = 0
-pontos_maquina = 0
-inicio = time.time()
+        # Estado do jogo
+        self.tab_jog = criar_tabuleiro()
+        self.tab_mac = criar_tabuleiro()
+        self.revel_jog = [[True]*4 for _ in self.tab_jog]
+        self.revel_mac = [[True]*4 for _ in self.tab_mac]
+        self.emoji_secreto_mac = random.choice([e for linha in self.tab_jog for e in linha])
+        self.emoji_secreto_jog = random.choice([e for linha in self.tab_mac for e in linha])
+        self.pontos_jog = 0
+        self.pontos_mac = 0
+        self.inicio = time.time()
 
-print("\n🎮 Bem-vindo ao Cara a Cara dos Esportes!")
-print(f"Boa sorte, {nome_jogador}!")
+        # Interface
+        self._construir_layout()
+        self._atualizar_painel_pontos()
 
-while True:
-    print("\n🔍 Seu Tabuleiro:")
-    mostrar_tabuleiro(tabuleiro_jogador, revelados_jogador)
-    print("\n🎯 Tabuleiro da Máquina:")
-    mostrar_tabuleiro(tabuleiro_maquina, revelados_maquina, oculto=True)
+    # ---------- layout ----------
+    def _construir_layout(self):
+        topo = tk.Frame(self.root); topo.pack(pady=8)
 
-    coord = input("\nDigite a coordenada para ELIMINAR um esporte do tabuleiro da máquina (ex: B2): ").upper()
-    linha, coluna = coordenada_para_indices(coord)
+        self.lbl_pontos = tk.Label(topo, font=("Helvetica", 12, "bold"))
+        self.lbl_pontos.pack()
 
-    if linha is None or coluna is None or linha >= len(tabuleiro_maquina) or coluna >= 4:
-        print("Coordenada inválida.")
-        continue
+        quadros = tk.Frame(self.root); quadros.pack()
 
-    if not revelados_maquina[linha][coluna]:
-        print("Essa posição já foi eliminada.")
-        continue
+        self.frm_jogador = tk.LabelFrame(quadros, text=f"Seu Tabuleiro ({self.nome})")
+        self.frm_maquina = tk.LabelFrame(quadros, text="Tabuleiro da Máquina")
+        self.frm_jogador.grid(row=0, column=0, padx=10, pady=10)
+        self.frm_maquina.grid(row=0, column=1, padx=10, pady=10)
 
-    emoji = tabuleiro_maquina[linha][coluna]
-    dicas = esportes[emoji]["dicas"][:]
-    random.shuffle(dicas)
-    print(f"\n📌 Dica: {dicas[0]}")
-    resposta = input("Qual é o esporte? ").strip().upper()
+        self.btns_jog = []   # botões do jogador (apenas exibição)
+        self.btns_mac = []   # botões que o jogador pode clicar
+        for i, linha in enumerate(self.tab_jog):
+            fila_btns_jog, fila_btns_mac = [], []
+            for j, emoji in enumerate(linha):
+                # Jogador
+                b = tk.Button(self.frm_jogador, text=emoji, width=4, height=2,
+                              font=("Segoe UI Emoji", 20), state="disabled")
+                b.grid(row=i, column=j, padx=2, pady=2)
+                fila_btns_jog.append(b)
+                # Máquina
+                b2 = tk.Button(self.frm_maquina, text="❓", width=4, height=2,
+                               font=("Segoe UI Emoji", 20),
+                               command=lambda r=i, c=j: self._click_maquina(r, c))
+                b2.grid(row=i, column=j, padx=2, pady=2)
+                fila_btns_mac.append(b2)
+            self.btns_jog.append(fila_btns_jog)
+            self.btns_mac.append(fila_btns_mac)
 
-    if resposta == esportes[emoji]["nome"].upper():
-        revelados_maquina[linha][coluna] = False
-        pontos_jogador += 1
-        print(f"✅ Você eliminou {emoji}!")
-    else:
-        print("❌ Resposta incorreta.")
+    # ---------- ações ----------
+    def _click_maquina(self, r, c):
+        if not self.revel_mac[r][c]:    # já eliminado
+            return
 
-   
-    print("\n🤖 Vez da máquina...")
-    time.sleep(1)
-    opcoes = [(i, j) for i in range(len(tabuleiro_jogador)) for j in range(4) if revelados_jogador[i][j]]
-    if opcoes:
-        i, j = random.choice(opcoes)
-        acertou = random.random() < 0.3
-        emoji = tabuleiro_jogador[i][j]
-        if emoji == emoji_secreto_maquina and acertou:
-            print("A máquina tentou adivinhar e acertou seu esporte secreto!")
-            revelados_jogador[i][j] = False
-            pontos_maquina += 1
-        elif emoji != emoji_secreto_maquina:
-            revelados_jogador[i][j] = False
-            pontos_maquina += 1
-            print(f"A máquina eliminou uma peça em {chr(j+65)}{i+1}")
+        emoji = self.tab_mac[r][c]
+        dica = random.choice(esportes[emoji]["dicas"])
+        resposta = simpledialog.askstring("Dica", f"{dica}\n\nQual é o esporte?")
+
+        if resposta and resposta.strip().upper() == esportes[emoji]["nome"].upper():
+            self.revel_mac[r][c] = False
+            self.btns_mac[r][c]["text"] = "❌"
+            self.btns_mac[r][c]["state"] = "disabled"
+            self.pontos_jog += 1
+            messagebox.showinfo("Correto", f"Você eliminou {emoji}!")
         else:
-            print("A máquina tentou e errou.")
-    time.sleep(1)
+            messagebox.showwarning("Errado", "Resposta incorreta.")
 
-    fim = time.time()
-    restantes_jogador = sum(row.count(True) for row in revelados_jogador)
-    restantes_maquina = sum(row.count(True) for row in revelados_maquina)
+        self._maquina_joga()
+        self._atualizar_painel_pontos()
+        self._verificar_fim()
 
-    if restantes_jogador == 1 or restantes_maquina == 1:
-        print("\n🎮 Fim de jogo!")
-        print(f"{nome_jogador}: {pontos_jogador} eliminações")
-        print(f"Máquina: {pontos_maquina} eliminações")
-        resultado = "Vitória" if pontos_jogador > pontos_maquina else "Derrota"
-        print(f"\n🏁 Resultado: {resultado}!")
-        salvar_ranking(nome_jogador, pontos_jogador, fim - inicio, resultado)
-        break
+    def _maquina_joga(self):
+     messagebox.showinfo("Vez da Máquina", "Agora a máquina vai jogar, clique em OK para continuar…")
+
+     CHANCE_DE_ACERTO = 0.3
+
+    # Opções disponíveis (peças ainda não eliminadas)
+     opcoes = [(i, j) for i in range(len(self.tab_jog))
+              for j in range(4) if self.revel_jog[i][j]]
+     if not opcoes:
+        return
+
+     i, j = random.choice(opcoes)
+     emoji = self.tab_jog[i][j]
+     acertou = random.random() < CHANCE_DE_ACERTO
+
+     if acertou:
+        self.revel_jog[i][j] = False
+        self.btns_jog[i][j]["text"] = "❌"
+        self.pontos_mac += 1
+
+        if emoji == self.emoji_secreto_mac:
+            msg = "A máquina tentou adivinhar e acertou seu esporte secreto!"
+        else:
+            msg = f"A máquina acertou e eliminou a peça em {chr(j+65)}{i+1}."
+     else:
+        if emoji == self.emoji_secreto_mac:
+            msg = "A máquina tentou adivinhar seu esporte secreto, mas errou."
+        else:
+            msg = f"A máquina tentou eliminar a peça em {chr(j+65)}{i+1}, mas errou o palpite."
+
+     messagebox.showinfo("Máquina", msg)
+
+    # ---------- util ----------
+    def _atualizar_painel_pontos(self):
+        self.lbl_pontos.config(
+            text=f"{self.nome}: {self.pontos_jog} eliminações   |   Máquina: {self.pontos_mac} eliminações"
+        )
+
+    def _verificar_fim(self):
+        rest_jog = sum(row.count(True) for row in self.revel_jog)
+        rest_mac = sum(row.count(True) for row in self.revel_mac)
+        if rest_jog == 1 or rest_mac == 1:
+            fim = time.time()
+            resultado = "Vitória" if self.pontos_jog > self.pontos_mac else "Derrota"
+            salvar_ranking(self.nome, self.pontos_jog, fim - self.inicio, resultado)
+            messagebox.showinfo("Fim de Jogo",
+                                f"Resultado: {resultado}\n\n{self.nome}: {self.pontos_jog} eliminações\n"
+                                f"Máquina: {self.pontos_mac} eliminações")
+            self.root.destroy()
+
+# -------------------- Execução -------------------- #
+if __name__ == "__main__":
+    tk.Tk().report_callback_exception = lambda *args: print("Erro:", args)  # debug
+    root = tk.Tk()
+    game = JogoGUI(root)
+    root.mainloop()
