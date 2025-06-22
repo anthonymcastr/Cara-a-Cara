@@ -71,18 +71,20 @@ def salvar_ranking(nome, pontos, duracao, resultado):
     with open("ranking.txt", "a", encoding="utf-8") as arq:
         arq.write(f"{nome} - {pontos} eliminações - {duracao:.2f} segundos - {resultado}\n")
 
-# ---------------------- Classe principal --------------------- #
+# vamos usar o self para guardar as informacoes, cada atributo da classe vai ser um atributo do objeto, e vamos usar o self pra acessar
 class JogoGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Cara a Cara dos Esportes 🏆")
+        self.root.title("Descubra o esporte secreto da máquina! O primeiro jogador a eliminar 11 esportes vence!")
 
-        # Pergunta o nome
+        # perguntamos o nome
+        # simple dialog vai pedir informacoes pro usuario, com uma caixa de dialogo q tem campo de texto
         self.nome = simpledialog.askstring("Nome", "Digite seu nome:", parent=self.root)
         if not self.nome:
             self.root.destroy();  return
 
-        # Estado do jogo
+        # estados do jogo
         self.tab_jog = criar_tabuleiro()
         self.tab_mac = criar_tabuleiro()
         self.revel_jog = [[True]*4 for _ in self.tab_jog]
@@ -93,11 +95,11 @@ class JogoGUI:
         self.pontos_mac = 0
         self.inicio = time.time()
 
-        # Interface
+        # interface 
         self._construir_layout()
         self._atualizar_painel_pontos()
 
-    # ---------- layout ----------
+    # layout 
     def _construir_layout(self):
         topo = tk.Frame(self.root); topo.pack(pady=8)
 
@@ -116,12 +118,12 @@ class JogoGUI:
         for i, linha in enumerate(self.tab_jog):
             fila_btns_jog, fila_btns_mac = [], []
             for j, emoji in enumerate(linha):
-                # Jogador
-                b = tk.Button(self.frm_jogador, text=emoji, width=4, height=2,
-                              font=("Segoe UI Emoji", 20), state="disabled")
+                # aqui pro jogador
+                b = tk.Button(self.frm_jogador, text=emoji, width=4, height=2, # define o tamanho do botão (não do emoji em si), basicamente a área clicável
+                              font=("Segoe UI Emoji", 20), state="disabled") # esse sim define o tamanho do emoji, a font 
                 b.grid(row=i, column=j, padx=2, pady=2)
                 fila_btns_jog.append(b)
-                # Máquina
+                # aqui pra maquina
                 b2 = tk.Button(self.frm_maquina, text="❓", width=4, height=2,
                                font=("Segoe UI Emoji", 20),
                                command=lambda r=i, c=j: self._click_maquina(r, c))
@@ -130,21 +132,21 @@ class JogoGUI:
             self.btns_jog.append(fila_btns_jog)
             self.btns_mac.append(fila_btns_mac)
 
-    # ---------- ações ----------
+    # geral, movimentos do jogador e da máquina
     def _click_maquina(self, r, c):
-        if not self.revel_mac[r][c]:    # já eliminado
+        if not self.revel_mac[r][c]:    # caso já eliminado
             return
 
         emoji = self.tab_mac[r][c]
-        dica = random.choice(esportes[emoji]["dicas"])
-        resposta = simpledialog.askstring("Dica", f"{dica}\n\nQual é o esporte?")
+        dica = random.choice(esportes[emoji]["dicas"]) # puxo uma dica aleatoria do emoji clicado, com random, buscando no dicionario pela chave emoji
+        resposta = simpledialog.askstring("Dica", f"{dica}\n\nQual é o esporte?") # questiono qual o esporte (utilizando o simpledialog)
 
-        if resposta and resposta.strip().upper() == esportes[emoji]["nome"].upper():
+        if resposta and resposta.strip().upper() == esportes[emoji]["nome"].upper(): ## igualamos a resposta do usuario com o nome do emoji, ignorando maiusculas e minusculas e também os espaços com strip
             self.revel_mac[r][c] = False
-            self.btns_mac[r][c]["text"] = "❌"
-            self.btns_mac[r][c]["state"] = "disabled"
-            self.pontos_jog += 1
-            messagebox.showinfo("Correto", f"Você eliminou {emoji}!")
+            self.btns_mac[r][c]["text"] = "❌" ## mudamos o texto do botão pra ❌
+            self.btns_mac[r][c]["state"] = "disabled" ## desabilitamos o botão pós clique
+            self.pontos_jog += 1 ## jogador ganha um ponto
+            messagebox.showinfo("Correto", f"Você eliminou {emoji}!") ## mostramos uma janela c mensagem de sucesso e o emoji eliminado
         else:
             messagebox.showwarning("Errado", "Resposta incorreta.")
 
@@ -155,9 +157,9 @@ class JogoGUI:
     def _maquina_joga(self):
      messagebox.showinfo("Vez da Máquina", "Agora a máquina vai jogar, clique em OK para continuar…")
 
-     CHANCE_DE_ACERTO = 0.3
+     CHANCE_DE_ACERTO = 0.3 # defini 30% de chance da maquina acertar apenas
 
-    # Opções disponíveis (peças ainda não eliminadas)
+    # opções disponíveis (peças ainda não eliminadas)
      opcoes = [(i, j) for i in range(len(self.tab_jog))
               for j in range(4) if self.revel_jog[i][j]]
      if not opcoes:
@@ -184,7 +186,7 @@ class JogoGUI:
 
      messagebox.showinfo("Máquina", msg)
 
-    # ---------- util ----------
+    # painel dos pontos e verificação de fim de jogo 
     def _atualizar_painel_pontos(self):
         self.lbl_pontos.config(
             text=f"{self.nome}: {self.pontos_jog} eliminações   |   Máquina: {self.pontos_mac} eliminações"
@@ -202,9 +204,9 @@ class JogoGUI:
                                 f"Máquina: {self.pontos_mac} eliminações")
             self.root.destroy()
 
-# -------------------- Execução -------------------- #
+# executa o jogo
 if __name__ == "__main__":
-    tk.Tk().report_callback_exception = lambda *args: print("Erro:", args)  # debug
+    tk.Tk().report_callback_exception = lambda *args: print("Erro:", args)  
     root = tk.Tk()
     game = JogoGUI(root)
     root.mainloop()
