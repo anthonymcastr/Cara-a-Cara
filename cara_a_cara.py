@@ -80,7 +80,6 @@ def mostrar_top10():
         for linha in linhas: #  percorre por cada linha do arquivo
             partes = linha.strip().split(" - ") # separa a linha em partes, usando o " - " como delimitador
             if len(partes) >= 4: #  verifica se a linha tem pelo menos 4 partes
-                nome = partes[0] #
                 try:
                     pontos = int(partes[1].split()[0])
                     tempo = float(partes[2].split()[0])
@@ -107,8 +106,8 @@ def mostrar_top10():
 class JogoGUI:
     def __init__(self, root):
         self.root = root
-        self.root.title("Cara a Cara dos Esportes 🏆")
-        self.root.title("Descubra o esporte secreto da máquina! O primeiro jogador a eliminar 11 esportes vence!")
+        self.root.title("Cara a Cara dos Esportes - Elimine 11 e vença! 🏆")
+        
         mostrar_top10()
         # perguntamos o nome
         # simple dialog vai pedir informacoes pro usuario, com uma caixa de dialogo q tem campo de texto
