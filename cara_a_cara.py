@@ -71,13 +71,45 @@ def salvar_ranking(nome, pontos, duracao, resultado):
     with open("ranking.txt", "a", encoding="utf-8") as arq:
         arq.write(f"{nome} - {pontos} eliminações - {duracao:.2f} segundos - {resultado}\n")
 
+def mostrar_top10():
+    try:
+        with open("ranking.txt", "r", encoding="utf-8") as arq:
+            linhas = arq.readlines() # le todas as linhas do arquivo
+
+        dados = [] # lista pra guardar os dados do ranking
+        for linha in linhas: #  percorre por cada linha do arquivo
+            partes = linha.strip().split(" - ") # separa a linha em partes, usando o " - " como delimitador
+            if len(partes) >= 4: #  verifica se a linha tem pelo menos 4 partes
+                nome = partes[0] #
+                try:
+                    pontos = int(partes[1].split()[0])
+                    tempo = float(partes[2].split()[0])
+                    dados.append((pontos, tempo, linha.strip()))
+                except ValueError:
+                    continue
+
+        # ordenamos por pontuação (decrescente) e tempo (crescente)
+        dados.sort(key=lambda x: (-x[0], x[1]))
+
+        # selecionamos apenas os 10 primeiros
+        top10 = dados[:10]
+        if top10:
+            texto = "\n".join([f"{i+1}. {item[2]}" for i, item in enumerate(top10)])
+        else:
+            texto = "Ainda não há registros no ranking."
+
+    except FileNotFoundError:
+        texto = "Ainda não há ranking registrado."
+
+    messagebox.showinfo("🏆 Top 10 Ranking", texto)
+
 # vamos usar o self para guardar as informacoes, cada atributo da classe vai ser um atributo do objeto, e vamos usar o self pra acessar
 class JogoGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Cara a Cara dos Esportes 🏆")
         self.root.title("Descubra o esporte secreto da máquina! O primeiro jogador a eliminar 11 esportes vence!")
-
+        mostrar_top10()
         # perguntamos o nome
         # simple dialog vai pedir informacoes pro usuario, com uma caixa de dialogo q tem campo de texto
         self.nome = simpledialog.askstring("Nome", "Digite seu nome:", parent=self.root)
