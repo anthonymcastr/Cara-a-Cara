@@ -62,7 +62,6 @@ esportes = {
 }
 ## cria um tabuleiro, torna os emojis uma lista c/ os esportes da sessão acima 
 def criar_tabuleiro():
-    """Embaralha os emojis em linhas de 4."""
     emojis = list(esportes.keys())
     random.shuffle(emojis)
     return [emojis[i:i + 4] for i in range(0, len(emojis), 4)]
@@ -106,7 +105,7 @@ def mostrar_top10():
 class JogoGUI:
     def __init__(self, root):
         self.root = root
-        self.root.title("Cara a Cara dos Esportes - Elimine 11 e vença! 🏆")
+        self.root.title("Cara a Cara dos esportes - Elimine 11 e vença! 🏆")
         
         mostrar_top10()
         # perguntamos o nome
@@ -115,7 +114,7 @@ class JogoGUI:
         if not self.nome:
             self.root.destroy();  return
 
-        # estados do jogo
+        # estados iniciais do jogo
         self.tab_jog = criar_tabuleiro()
         self.tab_mac = criar_tabuleiro()
         self.revel_jog = [[True]*4 for _ in self.tab_jog]
